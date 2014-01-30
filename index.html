@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>mChart.js</title>
+    <script src="http://code.jquery.com/jquery-1.10.2.min.js"></script>
+    <script src="lib/snap.svg-min.js"></script>
+    <script src="mchart.js"></script>
+
+    <script>
+      $(function(){
+        $("#svg").mChart({
+          test: 'lol'
+        });
+      });
+    </script>
+
+    <style>
+    body {
+      background: #eee;
+      margin: 0px;
+      padding: 0px;
+    }
+    #svg {
+      height: 500px;
+      width: 900px;
+      background: white;
+    }
+    text {
+      text-anchor: middle;
+      fill: #ccc;
+      font-size: 13px;
+    }
+    circle:hover {
+    }
+    </style>
+
+  <body>
+
+    <svg id="svg"></svg>
+
+  </body>
+</html>
