@@ -33,11 +33,11 @@
          lineWidth      : 1
       },
       xAxis             : {
-         categories     : ['Janvier', 'Fevrier', 'Mars', 'Avril', 'Mai', 'Juin', 'Juillet']
+         categories     : ['Janvier', 'Fevrier', 'Mars', 'Avril', 'Mai', 'Juin', 'Juillet', 'Aout', 'Septembre', 'Octobre', 'Novembre', 'Décembre']
       },
       yAxis             : {},
       series            : [{
-         data           : [3, 10, 20, 23, 26, 22, 18]
+         data           : [3, 10, 20, 23, 26, 22, 18, 22, 20, 25, 27, 30]
       }],
    }
 
@@ -74,15 +74,8 @@
          chartCoords.leftBottom  = [settings.paddingLeft, settings.height-settings.paddingBottom];
 
 
-         //alert(JSON.stringify(settings));
-
          // Create the svg
          $_svg = Snap($this.get(0));
-
-         /*$_svg.circle(chartCoords.leftTop[0], chartCoords.leftTop[1], 2);
-         $_svg.circle(chartCoords.rightTop[0], chartCoords.rightTop[1], 2);
-         $_svg.circle(chartCoords.rightBottom[0], chartCoords.rightBottom[1], 2);
-         $_svg.circle(chartCoords.leftBottom[0], chartCoords.leftBottom[1], 2);*/
 
          // Compute min and max for Y axis
          var yMin = parseInt(settings.series[0].data[0]),
@@ -98,11 +91,11 @@
          var chartZoneWidth   = chartCoords.rightBottom[0] - chartCoords.leftBottom[0];
          var chartZoneHeight  = chartCoords.leftBottom[1] - chartCoords.leftTop[1];
 
-         var xAxisPartCount = settings.xAxis.categories.length+1;
+         var xAxisPartCount = settings.xAxis.categories.length;
          var xAxisPartWidth = Math.round(chartZoneWidth/xAxisPartCount);
          var offsetLeft = parseInt(chartCoords.leftBottom[0]);
          $.each(settings.xAxis.categories, function(index, value) {
-            xAxisCoords.push(xAxisPartWidth*(index+1)+offsetLeft);
+            xAxisCoords.push(xAxisPartWidth*(index+1)+offsetLeft - (xAxisPartWidth/2));
          });
 
          var yAxisPartCount = 4;
@@ -115,20 +108,12 @@
             yAxisCoords.push(yCoord);
          });
 
-
-         //alert('xMin: '+xMin+', xMax: '+xMax+', yMin: '+yMin+', yMax: '+yMax);
-
          // Draw chart lines
          methods.drawLines();
-
          // Draw markers
          methods.drawMarkers();
-
+         // Draw x axis components
          methods.drawXAxis();
-
-         //$_svg.text(10, 10, "Snap");
-         //$_svg.circle(10, 10, 2);
-
       },
 
       drawMarkers: function() {
