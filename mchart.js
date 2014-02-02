@@ -32,13 +32,9 @@
          lineColor      : '#2f7ed8',
          lineWidth      : 1
       },
-      xAxis             : {
-         categories     : ['Janvier', 'Fevrier', 'Mars', 'Avril', 'Mai', 'Juin', 'Juillet', 'Aout', 'Septembre', 'Octobre', 'Novembre', 'Décembre']
-      },
+      xAxis             : {},
       yAxis             : {},
-      series            : [{
-         data           : [3, 10, 20, 23, 26, 22, 18, 22, 20, 25, 27, 30]
-      }],
+      series            : []
    }
 
    // These methods can be called by adding them as the first argument in the uploadify plugin call
@@ -87,6 +83,9 @@
                if (value < yMin) yMin = value;
             });
          });
+         var chartYMin = Math.floor((yMin-1) / 10) * 10;
+         var chartYMax = Math.ceil((yMax+1) / 10) * 10;
+         //alert(chartYMin+' '+chartYMax);
 
          var chartZoneWidth   = chartCoords.rightBottom[0] - chartCoords.leftBottom[0];
          var chartZoneHeight  = chartCoords.leftBottom[1] - chartCoords.leftTop[1];
@@ -103,13 +102,13 @@
          var offsetBottom = parseInt(chartCoords.leftBottom[1]);
          $.each(settings.xAxis.categories, function(index, value) {
             var yValue = parseInt(settings.series[0].data[index]);
-            var factor = (yValue - yMin) / (yMax - yMin);
+            var factor = (yValue - chartYMin) / (chartYMax - chartYMin);
             var yCoord = offsetBottom - (chartZoneHeight * factor);
             yAxisCoords.push(yCoord);
          });
 
          // Draw chart lines
-         methods.drawLines();
+         methods.drawLines(chartZoneHeight, chartYMin, chartYMax);
          // Draw markers
          methods.drawMarkers();
          // Draw x axis components
@@ -136,7 +135,7 @@
          });
       },
 
-      drawLines: function() {
+      drawLines: function(chartZoneHeight, chartYMin, chartYMax) {
 
          // Draw borders first
          var lineTop = $_svg.line(chartCoords.leftTop[0], chartCoords.leftTop[1], chartCoords.rightTop[0], chartCoords.rightTop[1]);
@@ -148,9 +147,18 @@
          lineBottom.attr({ stroke: settings.lineColor, strokeWidth: 1 });
          lineLeft.attr({ stroke: settings.lineColor, strokeWidth: 1 });
 
-         for (var i=1; i<10; i++) {
-            var line = $_svg.line(chartCoords.leftTop[0], 100*(i-1), chartCoords.rightTop[0], 100*(i-1));
+         var yAxisGap = chartYMax-chartYMin;
+         var yGap = Math.round( (yAxisGap/5) / 10 )*10;
+         var gapSize = chartZoneHeight/5;
+
+         //alert(chartYMin+' '+chartYMax)
+         //alert(yGap)
+
+         for (var i=0; i<6; i++) {
+            var y = chartCoords.leftBottom[1] - (i * gapSize);
+            var line = $_svg.line(chartCoords.leftTop[0], y, chartCoords.rightTop[0], y);
             line.attr({ stroke: settings.lineColor, strokeWidth: 1 });
+            $_svg.text(chartCoords.leftTop[0]-25, y+5, String(yGap*i));
          }
       },
 

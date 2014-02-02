@@ -10,7 +10,12 @@
     <script>
       $(function(){
         $("#svg").mChart({
-          test: 'lol'
+          xAxis: {
+            categories: ['Janvier', 'Fevrier', 'Mars', 'Avril', 'Mai', 'Juin', 'Juillet', 'Aout', 'Septembre', 'Octobre', 'Novembre', 'Décembre']
+          },
+          series: [{
+            data: [3, 100, 20, 23, 26, 22, 18, 22, 20, 25, 27, 30]
+          }]
         });
       });
     </script>
